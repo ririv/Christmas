@@ -170,7 +170,7 @@ function animateMeteors() {
         }
 
         // 增加角度，控制旋转速度
-        meteorData.angle += 0.05;
+        meteorData.angle += 0.03;
         if (meteorData.angle >= 2 * Math.PI) {
             meteorData.angle -= 2 * Math.PI; // 防止角度过大
         }

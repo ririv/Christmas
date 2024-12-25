@@ -1,6 +1,45 @@
+#treeContainer {
+    display: none;     /* 圣诞树初始隐藏 */
+    position: relative;
+    width: 100%;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: fadeIn 1s ease-in-out forwards;
+    text-align: center;
+    margin-top: 50px;    /* 调整上外边距 */
+}
+
 #tree {
-    width: 50%;
+    display: block;
+    margin: 0 auto;
+    /* 可选：设置最大宽度以防止过大 */
+    max-width: 1000px;
+    width: 100%;
+    /* 使SVG在容器内响应式缩放 */
     height: auto;
+    /* 保持纵横比 */
+}
+
+
+/* 平板设备（宽度 ≥ 768px） */
+@media (min-width: 768px) {
+    #tree {
+        width: 80%;
+        /* 占据父容器的70%宽度 */
+        max-width: 700px;
+        /* 最大宽度为700px */
+    }
+}
+
+/* 桌面设备（宽度 ≥ 1024px） */
+@media (min-width: 1024px) {
+    #tree {
+        width: 60%;
+        /* 占据父容器的50%宽度 */
+        max-width: 800px;
+        /* 最大宽度为800px */
+    }
 }
 
 
@@ -88,16 +127,7 @@
     pointer-events: none;
 }
 
-#treeContainer {
-    display: none;
-    /* 圣诞树初始隐藏 */
-    position: relative;
-    width: 100%;
-    top: 30%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    animation: fadeIn 1s ease-in-out forwards;
-}
+
 
 @keyframes fadeIn {
     from {

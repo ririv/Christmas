@@ -12,6 +12,15 @@ body, html {
     color: #ffffff; /* 白色文字，确保可读性 */
     font-family: Arial, sans-serif;
     position: relative;
+    font-size: 12px;
+}
+
+
+/* 平板设备 & 桌面设备（宽度 ≥ 768px） */
+@media (min-width: 768px) {
+    body {
+        font-size: 16px;
+    }
 }
 
 
@@ -32,33 +41,22 @@ body, html {
 
     height: 100%;
     text-align: center;
-    padding: 20px;
-}
-
-
-#three-container {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
+    padding: 10px;
 }
 
 
 
 .text-container {
     text-align: center; /* 默认居中 */
+    margin-top: 10px;    /* 调整上外边距 */
+    margin-bottom: 2%; /* 调整下外边距 */
 }
+
 
 
 .left {
-    text-align: center; /* 第一行偏左 */
-    transform: translateX(-15%); /* 向左偏移 10% */
-}
-
-.right {
-    text-align: center; /* 最后一行偏右 */
-    transform: translateX(15%); /* 向右偏移 10% */
+    text-align: left; /* 第一行偏左 */
+    transform: translateX(20%); /* 向左偏移 10% */
 }
 
 .center {
@@ -110,9 +108,6 @@ body, html {
     75% { transform: rotate(15deg); }
     100% { transform: rotate(30deg); }
 }
-
-
-
 
 .name {
     display: inline-block;

@@ -1,0 +1,125 @@
+/* styles.css */
+
+/* 设置整个页面的背景颜色为黑色 */
+
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* 隐藏滚动条 */
+    background-color: #000000; /* 黑色 */
+    color: #ffffff; /* 白色文字，确保可读性 */
+    font-family: Arial, sans-serif;
+    position: relative;
+}
+
+
+/* 雪花Canvas样式 */
+#snowCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* 允许鼠标事件穿透Canvas */
+    z-index: 1;
+}
+
+
+/* 页面内容样式 */
+.content {
+
+    height: 100%;
+    text-align: center;
+    padding: 20px;
+}
+
+
+#three-container {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+
+
+.text-container {
+    text-align: center; /* 默认居中 */
+}
+
+
+.left {
+    text-align: center; /* 第一行偏左 */
+    transform: translateX(-15%); /* 向左偏移 10% */
+}
+
+.right {
+    text-align: center; /* 最后一行偏右 */
+    transform: translateX(15%); /* 向右偏移 10% */
+}
+
+.center {
+    text-align: center; /* 中间的行居中 */
+}
+
+
+#muteButton {
+    position: fixed; /* 使用 fixed 定位，使按钮固定在右上角 */
+    top: 10px;       /* 距离顶部10px */
+    right: 10px;     /* 距离右边10px */
+    width: 50px;
+    height: 50px;
+    border: none;
+    cursor: pointer;
+    background: transparent; /* 确保背景透明 */
+    z-index: 1000;   /* 确保按钮在最上层 */
+}
+
+#muteButton img {
+    width: 100%;  /* 让图片适应按钮的宽度 */
+    height: 100%; /* 让图片适应按钮的高度 */
+    object-fit: contain; /* 确保图片保持比例，不会被拉伸 */
+}
+
+
+.hat {
+    position: absolute;
+    top: -20px; /* 调整帽子的位置，根据需要可以改变 */
+    left: 70%;  /* 使帽子水平居中 */
+    transform: translateX(-50%);
+    width: 35px; /* 调整帽子的大小 */
+    transform: rotate(30deg);
+}
+
+.hat {
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+.hat.shake {
+    animation: shake 0.5s ease;
+}
+
+@keyframes shake {
+    0% { transform: rotate(30deg); }
+    25% { transform: rotate(15deg); }
+    50% { transform:rotate(45deg); }
+    75% { transform: rotate(15deg); }
+    100% { transform: rotate(30deg); }
+}
+
+
+
+
+.name {
+    display: inline-block;
+    position: relative;
+}
+
+
+
+
+

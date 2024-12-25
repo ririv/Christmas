@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SVG动态加载与爆炸后出现圣诞树</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f5f5f5;
+    }
+    #svg-container {
+      cursor: pointer;
+      position: relative;
+    }
+    #gift {
+      cursor: pointer;
+      width: 150px;
+      transition: transform 0.3s ease; /* 添加缩放动画效果 */
+    }
+    #gift:active {
+      transform: scale(0.95); /* 点击时缩小效果 */
+    }
+    .particles {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+    #tree {
+      display: none; /* 圣诞树初始隐藏 */
+      position: absolute;
+      width: 200px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      animation: fadeIn 1s ease-in-out forwards;
+    }
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- SVG容器 -->
+  <div id="svg-container"></div>
+
+  <!-- 粒子效果容器 -->
+  <div class="particles"></div>
+
+  <!-- 圣诞树容器 -->
+  <div id="tree">
+    <!-- 圣诞树SVG -->
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="#4caf50">
+      <!-- 树形 -->
+      <polygon points="32,4 4,40 24,40 16,56 48,56 40,40 60,40" fill="#4caf50"></polygon>
+      <!-- 树干 -->
+      <rect x="28" y="56" width="8" height="8" fill="#795548"></rect>
+      <!-- 装饰 -->
+      <circle cx="32" cy="14" r="2" fill="#ff5252"></circle>
+      <circle cx="24" cy="28" r="2" fill="#ffeb3b"></circle>
+      <circle cx="40" cy="28" r="2" fill="#ffeb3b"></circle>
+      <circle cx="32" cy="36" r="2" fill="#ff5252"></circle>
+    </svg>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script>
+    const svgContainer = document.getElementById('svg-container'); // SVG容器
+    const particlesContainer = document.querySelector('.particles'); // 粒子效果容器
+    const tree = document.getElementById('tree'); // 圣诞树容器
+
+    // 动态加载SVG
+    fetch('gift.svg') // 替换为你的礼物SVG文件路径
+      .then(response => response.text())
+      .then(svg => {
+        svgContainer.innerHTML = svg; // 加载SVG到容器内
+        const loadedSVG = svgContainer.querySelector('svg'); // 获取加载的SVG元素
+        loadedSVG.setAttribute('id', 'gift'); // 给SVG设置ID
+        bindExplosionEffect(loadedSVG); // 绑定爆炸效果事件
+      })
+      .catch(err => console.error('加载SVG失败:', err));
+
+    // 绑定爆炸效果事件
+    function bindExplosionEffect(svgElement) {
+      svgElement.addEventListener('click', () => {
+        // 手动触发缩放效果
+        svgElement.style.transform = 'scale(0.95)';
+
+        // 等待缩小完成
+        svgElement.addEventListener(
+          'transitionend',
+          function handleTransitionEnd() {
+            // 恢复原样动画开始
+            svgElement.style.transform = 'scale(1)';
+
+            // 在恢复一半时间后触发爆炸
+            setTimeout(() => {
+              const rect = svgElement.getBoundingClientRect(); // 获取SVG的位置
+              const centerX = rect.left + rect.width / 2;
+              const centerY = rect.top + rect.height / 2;
+
+              // 隐藏SVG
+              svgElement.style.display = 'none';
+
+              // 触发爆炸粒子效果
+              createExplosion(centerX, centerY);
+
+              // 显示圣诞树
+              setTimeout(() => {
+                tree.style.display = 'block'; // 显示圣诞树
+              }, 1000); // 延迟1秒显示圣诞树
+            }, 150); // 恢复一半时间后触发爆炸
+
+            // 移除事件监听，避免重复绑定
+            svgElement.removeEventListener('transitionend', handleTransitionEnd);
+          }
+        );
+      });
+    }
+
+    // 创建爆炸粒子效果
+    function createExplosion(x, y) {
+      for (let i = 0; i < 50; i++) {
+        const particle = document.createElement('div');
+        particle.style.position = 'absolute';
+        particle.style.width = '8px';
+        particle.style.height = '8px';
+        particle.style.background = getRandomColor();
+        particle.style.borderRadius = '50%';
+        particle.style.top = `${y}px`;
+        particle.style.left = `${x}px`;
+        particlesContainer.appendChild(particle);
+
+        const angle = Math.random() * 2 * Math.PI; // 随机角度
+        const distance = Math.random() * 200 + 50; // 随机爆炸距离
+        const duration = Math.random() * 1 + 0.5; // 随机动画时间
+
+        // 使用GSAP动画
+        gsap.to(particle, {
+          x: Math.cos(angle) * distance,
+          y: Math.sin(angle) * distance,
+          opacity: 0,
+          scale: 0.5,
+          duration: duration,
+          ease: 'power1.out',
+          onComplete: () => particle.remove() // 动画完成后移除粒子
+        });
+      }
+    }
+
+    // 随机颜色生成函数
+    function getRandomColor() {
+      const colors = ['#ff5252', '#ffb74d', '#4fc3f7', '#81c784', '#ba68c8'];
+      return colors[Math.floor(Math.random() * colors.length)];
+    }
+  </script>
+</body>
+</html>
